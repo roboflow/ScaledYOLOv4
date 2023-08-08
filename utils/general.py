@@ -1085,6 +1085,9 @@ def output_to_target(output, width, height):
     # Convert model output to target format [batch_id, class_id, x, y, w, h, conf]
     if isinstance(output, torch.Tensor):
         output = output.cpu().numpy()
+        
+    elif isinstance(output, list) and isinstance(output[0], torch.Tensor):  # If it's a list of torch.Tensors
+      output = [item.cpu() for item in output ] # convert each one from Tensor to memory
 
     targets = []
     for i, o in enumerate(output):
